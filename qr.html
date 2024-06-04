@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Bar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="project2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+  padding-top: 60px;
+  background-color: #222; /* Adjust body padding to accommodate fixed navbar */
+        }
+        .navbar {
+            overflow: hidden;
+            background-color: #222;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .navbar:hover{
+            border: 4px solid #01dbc2;
+        }
+         
+        
+        .container {
+            display: flex;     
+        }
+        .big-box {
+            flex: 1;
+            padding: 20px;
+            background: #222;
+
+        }
+       
+        .big-box .form{
+            height: 60vh;
+            
+        }
+        .small-box {
+            flex: 0.5;
+            background-color: #222;
+            padding: 10px;
+        }
+        .big-box h1 {
+            font-size: 2em;
+            color: #01dbc2;
+            margin-bottom: 20px;
+        }
+        .big-box p {
+            color: #fff;
+            font-size: 1.1em;
+            line-height: 1.6;
+             margin-bottom: 15px;
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.1em;
+            border: none;
+            border-bottom: 2px solid #01dbc2;
+            background: transparent;
+            color: #fff;
+            outline: none;
+        }
+        .button1 {
+            width: 40%;
+            padding: 10px;
+            background: #01dbc2;
+            color: #222;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: 500;
+            text-transform: uppercase;
+            transition: background 0.3s ease;
+
+        }
+        .button1:hover {
+            background: #007c6e;
+        }
+        .small-box button {
+    width: 100%; /* Make buttons fill the width of table cells */
+    padding: 10px;
+    background-color: #01dbc2;
+    color: #222;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 500;
+    text-transform: uppercase;
+    transition: background 0.3s ease;
+
+}
+.small-box #top{
+    font-size: 1.1em;
+    font-weight: 500;
+    padding: 10px;
+}
+    </style>
+<script>
+    // Define the downloadQR function
+    function downloadQR() {
+        var canvas = document.querySelector('canvas');
+        var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+        var link = document.createElement('a');
+        link.href = image;
+        link.download = 'qr_code.png';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+    // jQuery ready function
+    $(document).ready(function() {
+        // Bind click event to submit button
+        $("#submitBtn").click(function(event) {
+            event.preventDefault(); // Prevent form submission
+            generateQRCode(); // Call function to generate QR code
+        });
+        // Function to generate QR code
+        function generateQRCode() {
+            var formData = {
+                'firstName': $('#firstName').val(),
+                'lastName': $('#lastName').val(),
+                'mobile-number': $('#mobile-number').val(),
+                'email': $('#email').val(),
+                'dob': $('#dob').val(),
+                'education': $('#education').val(),
+                'course': $('#course').val()
+            };
+
+            var qrText = JSON.stringify(formData);
+            var qr = new QRious({
+                element: document.getElementById('img'),
+                value: qrText,
+                size: 200
+            });
+        };
+
+        // Function to reset form
+        function myFunction() {
+            document.getElementById("frm1").reset();
+        }
+    });
+</script>
+</head>
+<body>
+<div class="navbar">
+    <div class="brand">QRAttend</div>
+    <a href="#home">Home</a>
+    <a href="#about">About</a>
+    <a href="practice.html">Contact</a>
+    <a href="attend.html">Attendance</a>
+</div>
+<div class="container">
+    <div class="big-box">
+        <div class="form">
+            <form id="frm1">
+                <div class="input-group">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName" placeholder="First Name" required autocomplete="given-name">
+    </div>
+    <div class="input-group">
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" name="lastName" placeholder="Last Name" autocomplete="family-name">
+    </div>
+    <div class="input-group">
+        <label for="mobile-number">Mobile No:</label>
+        <input type="text" id="mobile-number" name="mobile-number" pattern="[0-9]{10,10}" placeholder="Enter mobile number" autocomplete="tel">
+    </div>
+    <div class="input-group">
+        <label for="email">Email Id:</label>
+        <input type="email" id="email" name="email" placeholder="Enter Email Id" autocomplete="email">
+    </div>
+    <div class="input-group">
+        <label for="dob">DOB:</label>
+        <input type="date" id="dob" name="dob" autocomplete="bday">
+    </div>
+    <div class="input-group">
+        <label for="education">Education:</label>
+        <select id="education" name="education" autocomplete="education-level">
+            <option>Diploma</option>
+            <option>Bachelor's</option>
+            <option>Masters</option>
+        </select>
+    </div>
+    <div class="input-group">
+        <label for="course">Course:</label>
+        <select id="course" name="course" autocomplete="course">
+            <option>Civil</option>
+            <option>IT</option>
+            <option>Mechanical</option>
+            <option>ENTC</option>
+            <option>Electrical</option>
+            <option>MCA</option>
+        </select>
+    </div>
+    <div style="text-align: center;">
+        <input type="submit" class="button1" value="Submit" id="submitBtn">
+        <input type="reset" class="button1" value="Reset" onclick="myFunction()">
+    </div>
+            </form>
+        </div>
+    </div>
+    <div class="small-box">
+        <table border="1" width="100%" bgcolor="#222">
+            <tr>
+                <td id="top" colspan="5" align="center" bgcolor="#01dbc2">Generated QR Code</td>
+            </tr>
+            <tr>
+                <td colspan="5" align="center">
+                    <canvas id="img" width="200" height="200"></canvas> <!-- Canvas for QR code -->
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5" align="center">
+                    <button onclick="downloadQR()">Download QR</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<script>
+    function myFunction() {
+        document.getElementById("frm1").reset();
+    }
+</script>
+</body>
+</html>
